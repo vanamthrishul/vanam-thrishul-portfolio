@@ -10,7 +10,7 @@ Personal portfolio for Vanam Thrishul — fluid, ultra-animated, futuristic sing
 
 - **Palette**: bg `#06050b`, violet accent `#b026ff`, cyan accent `#00e5ff`, text `#f6f4ff`, muted `#948fb8`.
 - **Type**: display headline — system sans, weight 800, tight tracking; data/labels — `Consolas`/`Menlo` monospace; body — `Segoe UI`/system-ui.
-- **Signature motifs**: rotating wireframe icosahedron (canvas, depth-glowing violet→cyan), particle constellation background, glitch-scramble headline reveal, magnetic buttons, animated stat counters, scroll-revealed project cards.
+- **Signature motifs**: rotating wireframe trident (canvas, depth-glowing violet→cyan) — a nod to the name Thrishul ("trident"), built as a clean low-poly geometric construct (twisted-segment shaft, angular crossguard, straight tapering diamond-section prongs) with no devotional/traditional styling — same faceted sci-fi language as the rest of the site, ported in `lib/trident.ts`, spins around its own axis with a gentle sway rather than tumbling so it stays reading as a trident from most angles; particle constellation background, glitch-scramble headline reveal, magnetic buttons, animated stat counters, scroll-revealed project cards.
 - **Scroll identity** (built): two complementary techniques, both driven by GSAP ScrollTrigger synced to Lenis, both randomized/scrubbed rather than fixed or one-shot:
   - `components/RevolveIn.tsx` — normal-flow content tilts in 3D (rotateX/Y + depth + blur) and resolves as it's scrolled past. Needs real scroll room below an element to fully resolve — don't put it on the last item of a viewport-centered section with nothing following, or it stalls mid-reveal once scrolling maxes out (hit this bug once, fixed via `start: "top 95%", end: "top 60%"`).
   - `components/PinnedStage.tsx` — the screen itself holds still (`ScrollTrigger` `pin: true`) while stacked slide children cross-fade/rotate through it as you scroll; each slide's entrance axis/angle/direction is randomized per mount (`Math.random()`), never the same fixed tilt twice. This is what the user meant by "the screen shouldn't scroll, just the content" plus "rotatory motion randomly, not fixed." **Confirmed with user: applies per-section, not to the whole page as one giant pin.** Real-build intent: Hero pins briefly for a single revolve-in entrance (not multiple slides, then releases); Work section is the natural fit for true multi-slide `PinnedStage` use — pin while cycling through project cards, carousel-style; About/Contact stay normal-flow with `RevolveIn` only (no pin).
@@ -40,7 +40,7 @@ Personal portfolio for Vanam Thrishul — fluid, ultra-animated, futuristic sing
   Hero.tsx, WireframeCanvas.tsx, WorkSection.tsx, AboutSection.tsx, ContactSection.tsx
 /lib
   content.ts               — single source of truth for placeholder copy (name, title, projects, stats, about, contact links) — swap real content here only
-  icosahedron.ts             — vertex/edge math ported from the mockup
+  trident.ts               — procedurally-built trident wireframe vertex/edge math + perspective projection
 ```
 
 ## Content status
@@ -53,7 +53,11 @@ No backend: `mailto:` + social links for v1. If a real in-page form is wanted la
 
 ## Current status
 
-Scaffolded, site mechanics shell built (Lenis/cursor/preloader), and the real Hero section is built and verified: `components/Hero.tsx` assembles `WireframeCanvas` (icosahedron + constellation, ported to `lib/icosahedron.ts` + the canvas component), a glitch-scramble headline, animated `StatCounter`s, and `MagneticButton` (Framer Motion spring-based), all backed by `lib/content.ts`. Hero pins briefly on scroll and resolves from a tilted/blurred entrance via GSAP ScrollTrigger, then releases. `app/page.tsx` renders `<Hero />` followed by a `#work` placeholder section. Work, About/Contact sections, polish pass, and static-export verification are still to be built.
+Site mechanics shell built (Lenis/cursor/preloader), and all four sections are built and wired into `app/page.tsx`: `components/Hero.tsx` assembles `WireframeCanvas` (trident + constellation, `lib/trident.ts` + the canvas component), a glitch-scramble headline, animated `StatCounter`s, and `MagneticButton`, all backed by `lib/content.ts`; `WorkSection.tsx` cycles project cards through `PinnedStage`; `AboutSection.tsx` / `ContactSection.tsx` are normal-flow with `RevolveIn` reveals. Static export verified (`npm run build` → `out/`). Deployed to Vercel at `vanam-thrishul-portfolio.vercel.app`, auto-deploying on push to `master` on GitHub (`vanamthrishul/vanam-thrishul-portfolio`).
+
+**Known bug to fix**: Hero/Work/About content sits at `opacity: 0` on first paint — the GSAP ScrollTrigger scrub driving `RevolveIn`/the Hero pin starts at progress 0 (matching the `gsap.set(...)` "from" state) until the user scrolls, so a first-time visitor sees only the canvas with no text until they move the page. Confirmed via computed styles on both desktop and mobile; needs an initial-load reveal (not scroll-gated) fix.
+
+Still placeholder: real title/project write-ups/resume/images in `lib/content.ts`, and a general polish pass.
 
 ## Commands
 

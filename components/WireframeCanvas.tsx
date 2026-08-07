@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { ICOSAHEDRON_VERTICES, buildIcosahedronEdges, projectVertex } from "@/lib/icosahedron";
+import { TRIDENT_VERTICES, TRIDENT_EDGES, projectVertex } from "@/lib/trident";
 
 type Particle = { x: number; y: number; vx: number; vy: number };
 
 const PARTICLE_COUNT = 60;
-const EDGES = buildIcosahedronEdges();
 
 export default function WireframeCanvas({ className }: { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -71,22 +70,23 @@ export default function WireframeCanvas({ className }: { className?: string }) {
         ctx!.fill();
       });
 
-      // rotating wireframe
-      const angleY = time * 0.00025;
-      const angleX = time * 0.00017;
+      // rotating wireframe — steady spin around its own axis with a
+      // gentle sway, like a trident twirling rather than tumbling
+      const angleY = time * 0.00028;
+      const angleX = Math.sin(time * 0.00021) * 0.22;
       const cx = w * (w > 760 ? 0.74 : 0.5);
-      const cy = h * (w > 760 ? 0.48 : 0.72);
-      const radius = Math.min(w, h) * (w > 760 ? 0.2 : 0.16);
+      const cy = h * (w > 760 ? 0.5 : 0.56);
+      const radius = Math.min(w, h) * (w > 760 ? 0.135 : 0.105);
 
-      const projected = ICOSAHEDRON_VERTICES.map((v) =>
+      const projected = TRIDENT_VERTICES.map((v) =>
         projectVertex(v, angleX, angleY, cx, cy, radius)
       );
 
-      EDGES.forEach(([a, b]) => {
+      TRIDENT_EDGES.forEach(([a, b]) => {
         const p1 = projected[a];
         const p2 = projected[b];
         const depth = (p1.z + p2.z) / 2;
-        const glow = (depth + 1.7) / 3.4;
+        const glow = Math.min(Math.max((depth + 1) / 2, 0), 1);
         ctx!.strokeStyle = `rgba(${Math.round(176 - glow * 80)},${Math.round(38 + glow * 191)},255,${0.35 + glow * 0.55})`;
         ctx!.lineWidth = 1.2;
         ctx!.beginPath();
@@ -95,7 +95,7 @@ export default function WireframeCanvas({ className }: { className?: string }) {
         ctx!.stroke();
       });
       projected.forEach((p) => {
-        const glow = (p.z + 1.7) / 3.4;
+        const glow = Math.min(Math.max((p.z + 1) / 2, 0), 1);
         ctx!.beginPath();
         ctx!.arc(p.x, p.y, 2 + glow * 1.5, 0, Math.PI * 2);
         ctx!.fillStyle = `rgba(0,229,255,${0.5 + glow * 0.5})`;

@@ -44,9 +44,9 @@ export const about = {
 export const contact = {
   heading: "Let's talk", // PLACEHOLDER
   body: "Open to interesting problems and good teams. Reach out.", // PLACEHOLDER
-  email: "you@example.com", // PLACEHOLDER
+  email: "thrishulkrishna3@gmail.com",
   socials: [
-    { label: "GitHub", href: "https://github.com/" }, // PLACEHOLDER
-    { label: "LinkedIn", href: "https://linkedin.com/" }, // PLACEHOLDER
+    { label: "GitHub", href: "https://github.com/vanamthrishul" },
+    { label: "LinkedIn", href: "https://linkedin.com/" }, // PLACEHOLDER — send me your profile URL
   ],
 };

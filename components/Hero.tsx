@@ -93,9 +93,11 @@ export default function Hero() {
   const contentRef = useRef<HTMLDivElement>(null);
   const headingRef = useGlitchReveal(hero.headline);
 
-  // brief pin: the hero holds in the viewport while its content
-  // resolves from a tilted/blurred entrance, then releases into the
-  // normally-scrolling Work section.
+  // content resolves from a tilted/blurred entrance automatically on
+  // load (not scroll-gated — it's the first thing visitors see, so it
+  // can't wait on a scroll gesture to appear); the hero separately
+  // pins briefly in the viewport as the visitor starts scrolling past,
+  // then releases into the normally-scrolling Work section.
   useEffect(() => {
     const stage = stageRef.current;
     const content = contentRef.current;
@@ -106,26 +108,28 @@ export default function Hero() {
 
     gsap.set(content, { rotateX: -16, y: 50, z: -140, opacity: 0, filter: "blur(10px)" });
 
-    const tween = gsap.to(content, {
+    const entrance = gsap.to(content, {
       rotateX: 0,
       y: 0,
       z: 0,
       opacity: 1,
       filter: "blur(0px)",
-      ease: "none",
-      scrollTrigger: {
-        trigger: stage,
-        start: "top top",
-        end: "+=70%",
-        scrub: 0.8,
-        pin: true,
-        anticipatePin: 1,
-      },
+      ease: "power3.out",
+      duration: 1.1,
+      delay: 0.5,
+    });
+
+    const pin = ScrollTrigger.create({
+      trigger: stage,
+      start: "top top",
+      end: "+=70%",
+      pin: true,
+      anticipatePin: 1,
     });
 
     return () => {
-      tween.scrollTrigger?.kill();
-      tween.kill();
+      entrance.kill();
+      pin.kill();
     };
   }, []);
 

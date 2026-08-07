@@ -3,17 +3,16 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
+function prefersReducedMotion() {
+  return typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
 export default function Preloader() {
-  const [progress, setProgress] = useState(0);
-  const [done, setDone] = useState(false);
+  const [progress, setProgress] = useState(() => (prefersReducedMotion() ? 100 : 0));
+  const [done, setDone] = useState(prefersReducedMotion);
 
   useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) {
-      setProgress(100);
-      setDone(true);
-      return;
-    }
+    if (prefersReducedMotion()) return;
 
     const start = performance.now();
     const duration = 1400;
