@@ -15,10 +15,10 @@ type Props = {
 
 /**
  * Wraps content that tilts and rotates into place as it enters the
- * viewport, scrubbed to scroll position (not a one-shot trigger) —
+ * viewport, scrubbed to scroll position (not a one-shot trigger) -
  * the "revolving in through the clouds" motion signature for the site.
  * Requires an ancestor with `perspective` set (see `.reveal-perspective`).
- * Needs real scroll room below the element to fully resolve — avoid
+ * Needs real scroll room below the element to fully resolve - avoid
  * placing it on the last item of a viewport-centered section with no
  * following content, or it can stall mid-reveal once scrolling maxes out.
  */

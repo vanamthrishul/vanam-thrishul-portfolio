@@ -10,7 +10,7 @@ import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUnifo
 
 gsap.registerPlugin(ScrollTrigger);
 
-// GPT-generated v7 "knife metal" mesh — kept as the emblem by choice.
+// GPT-generated v7 "knife metal" mesh - kept as the emblem by choice.
 // Swap the file here to change it; the component doesn't care about its shape.
 const MODEL_URL = "/models/trident-skull-v7.glb";
 
@@ -102,7 +102,7 @@ export default function TridentSkull3D({ className }: { className?: string }) {
     let modelHeight = 6.3; // refined from the model's bounding box once loaded
     let modelWidth = 5.5;
 
-    // backlight — child of the pivot so it stays behind the badge as it turns
+    // backlight - child of the pivot so it stays behind the badge as it turns
     const glowTexture = makeGlowTexture();
     const backGlowMaterial = new THREE.MeshBasicMaterial({
       map: glowTexture,

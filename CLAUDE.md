@@ -72,5 +72,6 @@ Still placeholder: real title/project write-ups/resume/images in `lib/content.ts
 ## Notes
 
 - Respect `prefers-reduced-motion` everywhere custom animation is added (canvas, cursor, preloader, magnetic buttons) — already the pattern in the mockup; carry it through.
+- **No em dashes (—) anywhere in the site**: copy, page title/metadata, or code comments. The user explicitly doesn't want them. Use a colon, comma, pipe (`Vanam Thrishul | Portfolio`) or a plain hyphen instead.
 - Hide the custom cursor and lower particle/dust counts on touch/mobile for perf.
 - Visual checks: headless Edge (`msedge --headless=new --use-angle=swiftshader --enable-unsafe-swiftshader --screenshot`) renders the WebGL emblem; it can't scroll and won't go below ~500px wide on Windows. For scrolled sections, drive Edge with `puppeteer-core` (install it in a scratch dir, not the project) and `window.scrollTo` + a ~2.5s settle per stop.

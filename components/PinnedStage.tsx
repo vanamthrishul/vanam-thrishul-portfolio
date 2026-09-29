@@ -13,7 +13,7 @@ type Props = {
 
 /**
  * Pins itself in the viewport (the screen holds still) while its slide
- * children cross-fade/rotate through, scrubbed to scroll position — each
+ * children cross-fade/rotate through, scrubbed to scroll position - each
  * slide gets a randomized axis/angle/direction on every mount so no two
  * transitions look identical.
  */

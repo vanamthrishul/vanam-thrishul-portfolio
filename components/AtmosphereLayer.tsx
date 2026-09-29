@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 
 // Low, slow-rolling fog banks hugging the bottom of the viewport, plus a
-// faint cold haze up top — the "night mist" from the emblem render.
+// faint cold haze up top - the "night mist" from the emblem render.
 type FogBank = {
   x: number; // 0..1 of width
   y: number; // 0..1 of height
@@ -88,7 +88,7 @@ export default function AtmosphereLayer() {
         ctx!.restore();
       });
 
-      // dust motes — nearer motes (higher depth) move and parallax more
+      // dust motes - nearer motes (higher depth) move and parallax more
       motes.forEach((m) => {
         if (!reduced) {
           m.y += m.vy * dt * (0.5 + m.depth);

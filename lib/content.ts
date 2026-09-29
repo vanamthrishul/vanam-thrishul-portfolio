@@ -1,19 +1,19 @@
 /**
  * Single source of truth for site copy. Everything here is a clearly
- * marked placeholder — swap values, not structure, once real content
+ * marked placeholder - swap values, not structure, once real content
  * (project write-ups, resume, images) is ready.
  */
 
 export const site = {
   name: "Vanam Thrishul",
-  role: "Software Engineer", // PLACEHOLDER — confirm real title
+  role: "Software Engineer", // PLACEHOLDER - confirm real title
   location: "India", // PLACEHOLDER
 };
 
 export const hero = {
   eyebrow: `${site.name.toUpperCase()} · PORTFOLIO 2026`,
   headline: "Code that moves.", // PLACEHOLDER
-  sub: "Software engineering with a bias for motion — realtime systems, tactile interfaces, and graphics that earn their keep.", // PLACEHOLDER
+  sub: "Software engineering with a bias for motion: realtime systems, tactile interfaces, and graphics that earn their keep.", // PLACEHOLDER
   primaryCta: { label: "View selected work", href: "#work" },
   secondaryCta: { label: "Get in touch", href: "#contact" },
   stats: [
@@ -37,7 +37,7 @@ export const projects: Project[] = [
 
 export const about = {
   heading: "About", // PLACEHOLDER
-  body: "A short bio goes here — background, what you focus on, and how you like to work. Replace this paragraph with the real thing.", // PLACEHOLDER
+  body: "A short bio goes here: background, what you focus on, and how you like to work. Replace this paragraph with the real thing.", // PLACEHOLDER
   skills: ["TypeScript", "React", "Node.js", "Systems Design", "WebGL"], // PLACEHOLDER
 };
 
@@ -47,6 +47,6 @@ export const contact = {
   email: "thrishulkrishna3@gmail.com",
   socials: [
     { label: "GitHub", href: "https://github.com/vanamthrishul" },
-    { label: "LinkedIn", href: "https://linkedin.com/" }, // PLACEHOLDER — send me your profile URL
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/vanam-thrishul" },
   ],
 };

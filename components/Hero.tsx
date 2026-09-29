@@ -94,7 +94,7 @@ export default function Hero() {
   const headingRef = useGlitchReveal(hero.headline);
 
   // content resolves from a tilted/blurred entrance automatically on
-  // load (not scroll-gated — it's the first thing visitors see, so it
+  // load (not scroll-gated - it's the first thing visitors see, so it
   // can't wait on a scroll gesture to appear); the hero separately
   // pins briefly in the viewport as the visitor starts scrolling past,
   // then releases into the normally-scrolling Work section.

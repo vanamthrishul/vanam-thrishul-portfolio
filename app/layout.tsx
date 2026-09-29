@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Vanam Thrishul — Portfolio",
+  title: "Vanam Thrishul | Portfolio",
   description:
     "Software engineer building fast, thoughtful, motion-first interfaces.",
 };
