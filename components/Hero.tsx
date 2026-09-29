@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import WireframeCanvas from "./WireframeCanvas";
+import TridentSkull3D from "./TridentSkull3D";
 import MagneticButton from "./MagneticButton";
 import { hero } from "@/lib/content";
 
@@ -135,7 +135,8 @@ export default function Hero() {
 
   return (
     <section ref={stageRef} className="hero-stage reveal-perspective">
-      <WireframeCanvas className="hero-canvas" />
+      <div className="hero-floor" aria-hidden="true" />
+      <TridentSkull3D className="hero-emblem" />
       <div ref={contentRef} className="hero-content">
         <p className="hero-eyebrow">{hero.eyebrow}</p>
         <h1 ref={headingRef} className="hero-heading">

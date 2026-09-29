@@ -4,11 +4,16 @@ import { projects } from "@/lib/content";
 
 export default function WorkSection() {
   return (
-    <section id="work" className="work-section reveal-perspective">
-      <RevolveIn className="section-intro">
-        <p className="section-eyebrow">SELECTED WORK</p>
-        <h2 className="section-heading">What I&apos;ve shipped</h2>
-      </RevolveIn>
+    // perspective lives on a wrapper, not the section: a `perspective` ancestor
+    // becomes the containing block for position: fixed, which breaks the
+    // PinnedStage pin (the stage would scroll away instead of holding still)
+    <section id="work" className="work-section">
+      <div className="reveal-perspective">
+        <RevolveIn className="section-intro">
+          <p className="section-eyebrow">SELECTED WORK</p>
+          <h2 className="section-heading">What I&apos;ve shipped</h2>
+        </RevolveIn>
+      </div>
       <PinnedStage className="pinned-stage work-stage">
         {projects.map((project) => (
           <article key={project.title} className="project-card">

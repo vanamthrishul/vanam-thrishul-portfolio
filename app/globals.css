@@ -1,23 +1,44 @@
 @import "tailwindcss";
 
 /*
-  Direction D ("Maximal") — deliberately single-world dark futuristic design.
-  No light-mode variant: this palette is the whole point, not a default that
-  needs to adapt to the viewer's theme.
+  Direction D ("Maximal"), retuned to the "forged steel" theme from the
+  trident-skull emblem: navy-black night, brushed/machined steel surfaces,
+  cold indigo glow, low fog. Deliberately single-world dark — no light mode.
 */
 :root {
-  --color-bg: #06050b;
-  --color-violet: #b026ff;
-  --color-cyan: #00e5ff;
-  --color-text: #f6f4ff;
-  --color-muted: #948fb8;
+  --color-bg: #05060b;
+  --color-panel: #0a0c14;
+  --color-glow: #6d6dff; /* indigo rim-light glow */
+  --color-ice: #a9b8ff; /* pale periwinkle highlight */
+  --color-steel: #c8cdd8;
+  --color-steel-dim: #5d6479;
+  --color-text: #eef0f6;
+  --color-muted: #8b91a7;
+  /* brushed steel with a bright band that can be slid across for a sheen */
+  --steel-text: linear-gradient(
+    100deg,
+    #9aa1b3 0%,
+    #eef1f7 18%,
+    #aeb4c3 32%,
+    #7c8397 48%,
+    #d9dde6 60%,
+    #ffffff 64%,
+    #c3c8d4 68%,
+    #8d94a7 84%,
+    #c8cdd8 100%
+  );
+  --steel-plate: linear-gradient(180deg, #eef1f6 0%, #b9bfcc 48%, #858c9f 52%, #c6cbd6 100%);
+  --edge-line: linear-gradient(135deg, rgba(200, 205, 216, 0.45), rgba(109, 109, 255, 0.35) 45%, rgba(200, 205, 216, 0.08) 75%, rgba(169, 184, 255, 0.4));
+  /* angular "machined" corners, echoing the emblem's cut edges */
+  --chamfer: 12px;
+  --chamfer-clip: polygon(var(--chamfer) 0, 100% 0, 100% calc(100% - var(--chamfer)), calc(100% - var(--chamfer)) 100%, 0 100%, 0 var(--chamfer));
 }
 
 @theme inline {
   --color-background: var(--color-bg);
   --color-foreground: var(--color-text);
-  --color-accent-violet: var(--color-violet);
-  --color-accent-cyan: var(--color-cyan);
+  --color-accent-glow: var(--color-glow);
+  --color-accent-ice: var(--color-ice);
   --color-muted: var(--color-muted);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -34,8 +55,8 @@ body {
 }
 
 ::selection {
-  background: var(--color-violet);
-  color: var(--color-bg);
+  background: var(--color-glow);
+  color: #fff;
 }
 
 /* ---------- custom cursor ---------- */
@@ -51,7 +72,7 @@ html.has-custom-cursor button {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--color-cyan);
+  background: var(--color-ice);
   pointer-events: none;
   z-index: 210;
   will-change: transform;
@@ -71,12 +92,12 @@ html.has-custom-cursor button {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  border: 1px solid var(--color-cyan);
+  border: 1px solid var(--color-ice);
   transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.3s ease;
 }
 .cursor-ring--active .cursor-ring-inner {
   transform: scale(1.6);
-  background: rgba(0, 229, 255, 0.08);
+  background: rgba(169, 184, 255, 0.08);
 }
 @media (pointer: coarse) {
   .cursor-dot,
@@ -127,11 +148,54 @@ html.has-custom-cursor button {
   display: flex;
   align-items: center;
 }
-.hero-canvas {
+.hero-emblem {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  top: 0;
+  bottom: 24%; /* ends just above the floor horizon so it floats over it */
+  left: 50%;
+  right: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+@media (max-width: 760px) {
+  .hero-emblem {
+    left: 0;
+    top: 12%;
+    bottom: 22%;
+    opacity: 0.45;
+  }
+}
+.hero-floor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 26%;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(50% 55% at 75% 0%, rgba(109, 109, 255, 0.16), transparent 70%),
+    linear-gradient(180deg, rgba(10, 12, 22, 0) 0%, rgba(10, 12, 22, 0.85) 30%, #05060b 100%);
+}
+.hero-floor::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 45%;
+  right: 5%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(169, 184, 255, 0.45), transparent);
+}
+@media (max-width: 760px) {
+  .hero-floor {
+    background:
+      radial-gradient(60% 55% at 50% 0%, rgba(109, 109, 255, 0.14), transparent 70%),
+      linear-gradient(180deg, rgba(10, 12, 22, 0) 0%, rgba(10, 12, 22, 0.85) 30%, #05060b 100%);
+  }
+  .hero-floor::before {
+    left: 10%;
+    right: 10%;
+  }
 }
 .hero-content {
   position: relative;
@@ -149,16 +213,40 @@ html.has-custom-cursor button {
   font-size: 11.5px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--color-cyan);
+  color: var(--color-ice);
   margin-bottom: 20px;
 }
-.hero-eyebrow::before {
+.hero-eyebrow::before,
+.section-eyebrow::before {
   content: "";
   width: 7px;
   height: 7px;
-  border-radius: 50%;
-  background: var(--color-violet);
-  box-shadow: 0 0 10px 2px var(--color-violet);
+  transform: rotate(45deg);
+  background: var(--color-ice);
+  box-shadow: 0 0 10px 2px var(--color-glow);
+}
+.steel-text,
+.hero-heading,
+.section-heading,
+.project-card__title {
+  background: var(--steel-text);
+  background-size: 250% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 18px rgba(109, 109, 255, 0.18));
+  animation: steel-sheen 9s ease-in-out infinite;
+}
+@keyframes steel-sheen {
+  0%,
+  55% {
+    background-position: 100% 0;
+  }
+  85%,
+  100% {
+    background-position: 0% 0;
+  }
 }
 .hero-heading {
   font-weight: 800;
@@ -184,30 +272,59 @@ html.has-custom-cursor button {
   flex-wrap: wrap;
 }
 .btn {
+  --chamfer: 9px;
+  position: relative;
+  overflow: hidden;
   padding: 15px 28px;
-  border-radius: 3px;
+  clip-path: var(--chamfer-clip);
   font-size: 13.5px;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 700;
   display: inline-block;
 }
+.btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -60%;
+  width: 40%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.75), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: none;
+}
+.btn:hover::after {
+  left: 125%;
+}
 .btn--solid {
-  color: var(--color-bg);
-  background: linear-gradient(120deg, var(--color-violet), var(--color-cyan));
-  transition: box-shadow 0.3s ease;
+  color: #0a0b12;
+  background: var(--steel-plate);
+  filter: drop-shadow(0 6px 22px rgba(109, 109, 255, 0.35));
+  transition: filter 0.3s ease;
 }
 .btn--solid:hover {
-  box-shadow: 0 8px 34px -6px rgba(176, 38, 255, 0.65);
+  filter: drop-shadow(0 8px 30px rgba(109, 109, 255, 0.65));
 }
 .btn--ghost {
-  color: var(--color-text);
-  border: 1px solid rgba(246, 244, 255, 0.25);
-  background: rgba(255, 255, 255, 0.03);
-  transition: border-color 0.3s ease;
+  isolation: isolate;
+  color: var(--color-steel);
+  background: var(--edge-line);
+  transition: color 0.3s ease, filter 0.3s ease;
+}
+.btn--ghost::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  clip-path: var(--chamfer-clip);
+  background: linear-gradient(180deg, #11131d, #080910);
+  z-index: -1;
 }
 .btn--ghost:hover {
-  border-color: var(--color-cyan);
+  color: #fff;
+  filter: drop-shadow(0 0 16px rgba(109, 109, 255, 0.45));
 }
 .hero-stats {
   margin-top: 64px;
@@ -224,7 +341,7 @@ html.has-custom-cursor button {
   display: inline-block;
 }
 .hero-stat__suffix {
-  color: var(--color-cyan);
+  color: var(--color-ice);
 }
 .hero-stat__label {
   display: block;
@@ -243,16 +360,8 @@ html.has-custom-cursor button {
   font-size: 11.5px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--color-cyan);
+  color: var(--color-ice);
   margin-bottom: 16px;
-}
-.section-eyebrow::before {
-  content: "";
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--color-violet);
-  box-shadow: 0 0 10px 2px var(--color-violet);
 }
 .section-heading {
   font-weight: 800;
@@ -274,19 +383,37 @@ html.has-custom-cursor button {
 .work-stage {
   margin-top: 3rem;
 }
+.project-card,
+.metal-panel {
+  --chamfer: 18px;
+  position: relative;
+  isolation: isolate;
+  clip-path: var(--chamfer-clip);
+  background: var(--edge-line);
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 24px rgba(109, 109, 255, 0.12));
+}
+.project-card::before,
+.metal-panel::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  clip-path: var(--chamfer-clip);
+  background:
+    radial-gradient(120% 60% at 50% 0%, rgba(169, 184, 255, 0.08), transparent 60%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.012) 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, #10121c, #07080e);
+}
 .project-card {
   max-width: 620px;
   padding: 2.5rem 2rem;
-  border: 1px solid rgba(246, 244, 255, 0.12);
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 4px;
 }
 .project-card__tag {
   display: inline-block;
   font-family: var(--font-geist-mono), monospace;
   font-size: 11px;
   letter-spacing: 0.16em;
-  color: var(--color-violet);
+  color: var(--color-ice);
   margin-bottom: 14px;
 }
 .project-card__title {
@@ -330,10 +457,21 @@ html.has-custom-cursor button {
   font-family: var(--font-geist-mono), monospace;
   font-size: 12px;
   letter-spacing: 0.04em;
-  color: var(--color-text);
-  border: 1px solid rgba(246, 244, 255, 0.18);
-  border-radius: 3px;
+  color: var(--color-steel);
+  --chamfer: 6px;
+  position: relative;
+  isolation: isolate;
+  clip-path: var(--chamfer-clip);
+  background: var(--edge-line);
   padding: 7px 12px;
+}
+.about-skills__item::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  clip-path: var(--chamfer-clip);
+  background: linear-gradient(180deg, #11131d, #080910);
 }
 
 /* ---------- contact ---------- */
@@ -369,13 +507,13 @@ html.has-custom-cursor button {
   letter-spacing: 0.06em;
   color: var(--color-muted);
   text-decoration: none;
-  border-bottom: 1px solid rgba(246, 244, 255, 0.2);
+  border-bottom: 1px solid rgba(200, 205, 216, 0.2);
   padding-bottom: 2px;
   transition: color 0.3s ease, border-color 0.3s ease;
 }
 .contact-socials__link:hover {
-  color: var(--color-cyan);
-  border-color: var(--color-cyan);
+  color: var(--color-ice);
+  border-color: var(--color-ice);
 }
 
 /* ---------- preloader ---------- */
@@ -394,18 +532,18 @@ html.has-custom-cursor button {
   font-family: var(--font-geist-mono), monospace;
   font-size: 13px;
   letter-spacing: 0.14em;
-  color: var(--color-cyan);
+  color: var(--color-ice);
   font-variant-numeric: tabular-nums;
 }
 .preloader__bar {
   width: 160px;
   height: 1px;
-  background: rgba(246, 244, 255, 0.15);
+  background: rgba(200, 205, 216, 0.15);
   overflow: hidden;
 }
 .preloader__bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-violet), var(--color-cyan));
+  background: linear-gradient(90deg, var(--color-glow), var(--color-ice));
 }
 
 @media (prefers-reduced-motion: reduce) {
